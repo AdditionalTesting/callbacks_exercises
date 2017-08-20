@@ -213,9 +213,16 @@ console.log( 'The total number of credit purchases is:', numCreditPurchases );
   - The assembled array should be made up of strings, not full `transaction` objects.
   - This array is allowed to contain duplicate values.
 */
-var uniqueVendors;
+// var uniqueVendors = transactions.filter ( function current(transaction) {
+//   if (transaction.vendor) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+//   .map
+// })
 
-console.log( 'The unique vendors are:', uniqueVendors );
+// console.log( 'The unique vendors are:', uniqueVendors );
 
 
 // --------------------------------------------------
@@ -230,7 +237,14 @@ console.log( 'The unique vendors are:', uniqueVendors );
   - The assembled array should be made up of strings, not full `transaction` objects.
   - Make sure that the resulting array *does not* include any duplicates.
 */
-var uniqueCustomers;
+var uniqueCustomers = [];
+transactions.forEach( function(item){
+  if (uniqueCustomers.includes(item.customer)) {
+    return
+  } else if (item.customer) {
+    uniqueCustomers.push(item.customer);
+  }
+})
 
 console.log( 'The unique customers are:', uniqueCustomers );
 
@@ -248,7 +262,15 @@ console.log( 'The unique customers are:', uniqueCustomers );
   - There may be more than 1 'sale' that includes 5 or more items.
   - Individual transactions do not have either `name` or `numItems` properties, we'll have to add them to the output.
 */
-var bigSpenders;
+var bigSpenders = [];
+transactions.forEach( function(bigMoney){
+  var newObject = {};
+  newObject['name'] = bigMoney.customer;
+  newObject['numItems'] = bigMoney.items.length;
+  if (bigMoney.customer && bigMoney.items.length > 4) {
+    bigSpenders.push(newObject);
+  }
+})
 
 console.log( 'The "big spenders" are:', bigSpenders );
 
@@ -262,7 +284,17 @@ console.log( 'The "big spenders" are:', bigSpenders );
   HINT(S):
   - Transactions don't have 'prices', but their 'items' do!
 */
-var sumSales;
+var sumSales = 0;
+transactions.forEach( function(questionSeven) {
+  var inArr = [];
+  if (inArr.includes(questionSeven.type === 'sale'))
+    return
+  else if (questionSeven.type === 'sale') {
+    questionSeven.items.forEach( function(innerSanctum) {
+      sumSales += innerSanctum.price
+    })
+  }
+})
 
 console.log( 'The sum of all sales is:', sumSales );
 
@@ -278,7 +310,15 @@ console.log( 'The sum of all sales is:', sumSales );
   - Make sure to include 'price' information from *all* purchases.
 */
 
-var sumPurchases;
+var sumPurchases = 0;
+
+transactions.forEach( function (singleItem) {
+  if (singleItem.type === 'purchase') {
+    for (var i = 0; i < singleItem.items.length; i++){
+      sumPurchases += (-1 * singleItem.items[i].price);
+    }
+  }
+})
 
 console.log( 'The sum of all purhcases is:', sumPurchases );
 
@@ -296,7 +336,13 @@ console.log( 'The sum of all purhcases is:', sumPurchases );
   HINT(S):
   - Unlike 'QUESTION 08' and 'QUESTION 09', here we're interested in both 'sale' and 'purchase' transactions.
 */
-var netProfit;
+var netProfit = 0;
+
+transactions.forEach( function(transaction) {
+  for (var i = 0; i < transaction.items.length; i++) {
+    netProfit += transaction.items[i].price;
+  }
+})
 
 console.log( 'The net profit is:', netProfit );
 
@@ -310,7 +356,14 @@ console.log( 'The net profit is:', netProfit );
   HINTS:
   - The result of this calculation should be a number (not an array, object, or other data type).
 */
-var mostItems;
+var mostItems = 0;
+transactions.forEach( function (singleTransaction) {
+  if (singleTransaction.items.length > mostItems) {
+    mostItems = singleTransaction.items.length
+  }
+
+
+})
 
 console.log( 'The most items sold in a single transaction is:', mostItems );
 
@@ -321,6 +374,21 @@ console.log( 'The most items sold in a single transaction is:', mostItems );
 /*
   Calculate the sum of the 'purchase' with the fewest items.
 */
-var sumOfSmallestPurchase;
+var leastItems = mostItems;
+var smallest = {};
+
+transactions.filter(function(transaction) {
+  if (transaction.type === 'purchase') {
+    return transaction
+  }
+}).forEach(function(t){
+  if (t.items.length < leastItems) {
+    leastItems = t.items.length;
+    smallest = t;
+  }
+});
+
+
+var sumOfSmallestPurchase = smallest.items[0].price + smallest.items[1].price;
 
 console.log( 'The sum of the smallest purchase is:', sumOfSmallestPurchase );
